@@ -1,10 +1,11 @@
 package com.figueroa.ioscalculator.components
 
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
@@ -13,10 +14,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -25,6 +26,7 @@ import com.figueroa.ioscalculator.ui.theme.BasicCalculatorButtonPrimary
 import com.figueroa.ioscalculator.ui.theme.TextColorPrimary
 import com.figueroa.ioscalculator.ui.theme.TextColorSecondary
 import com.figueroa.ioscalculator.ui.theme.sanFranciscoProFamily
+import com.figueroa.ioscalculator.util.calculateTextSize
 
 @Preview
 @Composable
@@ -33,10 +35,10 @@ fun BasicCalculatorButton(
     isIcon: Boolean = false,
     icon: Int? = R.drawable.plus_minus_icon,
     buttonColor: Color = BasicCalculatorButtonPrimary,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
 ) {
     Button(
-        modifier = Modifier.size(88.dp), onClick = onClick, colors = ButtonColors(
+        modifier = Modifier.size(88.dp), onClick = { onClick.invoke() }, colors = ButtonColors(
             containerColor = buttonColor,
             contentColor = TextColorPrimary,
             disabledContainerColor = Color.Transparent,
@@ -67,8 +69,11 @@ fun BasicCalculatorButton(
 @Composable
 fun BasicCalculatorScreen(
     primaryText: String = "0",
-    secondaryText: String = "0+0",
+    secondaryText: String = "",
 ) {
+
+    val textSize = calculateTextSize(primaryText)
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -87,10 +92,11 @@ fun BasicCalculatorScreen(
             modifier = Modifier.fillMaxWidth(),
             text = primaryText,
             color = TextColorPrimary,
-            fontSize = 56.sp,
+            fontSize = textSize,
             fontWeight = FontWeight.Normal,
             fontFamily = sanFranciscoProFamily,
-            textAlign = TextAlign.End
+            textAlign = TextAlign.End,
+            maxLines = 1
         )
     }
 }
